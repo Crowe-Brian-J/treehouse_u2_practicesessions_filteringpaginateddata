@@ -8,23 +8,44 @@ const authorsPerPage = 3
 
 /* ENTER YOUR CODE HERE */
 
-// 1. Create an event listener on the searchInput to listen for keyboard input.
-// 2. Inside, create a variable storing an empty array for the soon-to-be filtered authors.
-// 3. Create a variable to store the string the user has typed.
+// [X] 1. Create an event listener on the searchInput to listen for keyboard input.
+// [X] 2. Inside, create a variable storing an empty array for the soon-to-be filtered authors.
+// [X] 3. Create a variable to store the string the user has typed.
 //    Hint: toLowerCase()
-// 4-a. Start a loop to the length of `authors`.
-// 4-b. Inside, create a variable to store the current `authors` name.
+// [X] 4-a. Start a loop to the length of `authors`.
+// [X] 4-b. Inside, create a variable to store the current `authors` name.
 //      Hint: toLowerCase()
-// 4-c. Create a conditional to check if the author's name includes the user's input.
+// [X] 4-c. Create a conditional to check if the author's name includes the user's input.
 //      Hint: includes()
-// 4-d. If true, push the current author object into the new array created above.
-// 5-a. Create a conditional to check if the length of the new array is greater than zero.
-// 5-b. If true,
+// [X] 4-d. If true, push the current author object into the new array created above.
+// [X] 5-a. Create a conditional to check if the length of the new array is greater than zero.
+// [X] 5-b. If true,
 //      - Call the handlePagination() function passing it this new array.
 //      - Call the showPage() function passing it this new array and the number 1.
-// 5-c. If false,
+// [X] 5-c. If false,
 //      - Set the authorContainer's innerHTML to an <h3> saying no results were found.
 //      - Set the paginationList's innerHTML to an empty string.
+
+searchInput.addEventListener('input', (e) => {
+  let filteredAuthors = []
+  let searchText = e.target.value.toLowerCase()
+
+  for (let i = 0; i < authors.length; i++) {
+    let authorName = authors[i].name.toLowerCase()
+
+    if (authorName.includes(searchText)) {
+      filteredAuthors.push(authors[i])
+    }
+  }
+
+  if (filteredAuthors.length > 0) {
+    handlePagination(filteredAuthors)
+    showPage(filteredAuthors, 1)
+  } else {
+    authorContainer.innerHTML = `<h3>No results found.</h3>`
+    paginationList.innerHTML = ''
+  }
+})
 
 /* DON'T CHANGE THE CODE BELOW */
 
