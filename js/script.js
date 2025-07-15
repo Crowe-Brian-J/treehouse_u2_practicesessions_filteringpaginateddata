@@ -1,6 +1,6 @@
 // ELEMENT SELECTORS
 const authorContainer = document.querySelector('#authorContainer')
-const paginationList = document.querySelector('#paginationList')
+let paginationList = document.querySelector('#paginationList')
 const searchInput = document.querySelector('#authorSearch')
 
 // console.log(authors);
@@ -26,9 +26,22 @@ const authorsPerPage = 3
 //      - Set the authorContainer's innerHTML to an <h3> saying no results were found.
 //      - Set the paginationList's innerHTML to an empty string.
 
+// Self imposed problem:
+// [X] Store current active page in variable, currentPage
+// [X] Update currentPage whenever pagination buttons are clicked
+// [X] In the search event listener, if input is empty reset to currentPage with full authors list
+
+let currentPage = 1
+
 searchInput.addEventListener('input', (e) => {
   let filteredAuthors = []
   let searchText = e.target.value.toLowerCase()
+
+  if (searchText === '') {
+    handlePagination(authors, currentPage)
+    showPage(authors, currentPage)
+    return
+  }
 
   for (let i = 0; i < authors.length; i++) {
     let authorName = authors[i].name.toLowerCase()
@@ -39,7 +52,7 @@ searchInput.addEventListener('input', (e) => {
   }
 
   if (filteredAuthors.length > 0) {
-    handlePagination(filteredAuthors)
+    handlePagination(filteredAuthors, 1)
     showPage(filteredAuthors, 1)
   } else {
     authorContainer.innerHTML = `<h3>No results found.</h3>`
@@ -52,7 +65,7 @@ searchInput.addEventListener('input', (e) => {
 /* This function handles calculating how many buttons are
 needed and dynamically add them to the page */
 
-function handlePagination(array) {
+function handlePagination(array, activePage = 1) {
   const numberOfButtons = Math.ceil(array.length / authorsPerPage)
   paginationList.innerHTML = ''
 
@@ -64,7 +77,20 @@ function handlePagination(array) {
     `
     paginationList.insertAdjacentHTML('beforeend', html)
   }
-  paginationList.querySelector('button').classList.add('active')
+  //paginationList.querySelector('button').classList.add('active')
+
+  //set active button based on activePage argument
+  const buttons = paginationList.querySelectorAll('button')
+  if (buttons.length > 0 && activePage <= buttons.length) {
+    buttons[activePage - 1].classList.add('active')
+  } else if (buttons.length > 0) {
+    buttons[0].classList.add('active')
+  }
+
+  //remove previous event listeners to avoid stacking
+  paginationList.replaceWith(paginationList.cloneNode(true))
+  //re-select paginationList after cloning
+  paginationList = document.querySelector('#paginationList')
 
   /* This event listener handles calling our function
   below to change the page & add the `active` class  */
@@ -79,10 +105,14 @@ function handlePagination(array) {
 
     if (buttonClicked) {
       buttonClicked.classList.add('active')
-      showPage(array, buttonClicked.innerHTML)
+      currentPage = Number(buttonClicked.innerHTML)
+      showPage(array, currentPage)
     }
   })
 }
+
+handlePagination(authors, currentPage)
+showPage(authors, currentPage)
 
 /* This function handles calculating how many and which
 authors to show on the current page and dynamically add them */
