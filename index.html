@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>JavaScript Pagination</title>
+  </head>
+  <body>
+    <header>
+      <h1>PAGINATION SEARCH PRACTICE</h1>
+      <search class="input-container">
+        <input type="text" id="authorSearch" class="author-search" />
+        <img src="./assets/search.png" alt="search icon" />
+      </search>
+    </header>
+    <main class="wrapper">
+      <div id="authorContainer" class="author-container">
+        <!-- Author cards dynamically added here -->
+      </div>
+    </main>
+    <div class="pagination-container">
+      <ul id="paginationList" class="pagination-list">
+        <!-- Pagination buttons dynamically added here -->
+      </ul>
+    </div>
+    <script src="./js/data.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
